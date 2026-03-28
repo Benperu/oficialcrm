@@ -376,6 +376,12 @@
       transform: translateY(-1px);
     }
 
+    .estado-formulario {
+      margin-top: 10px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
     .footer {
       background: white;
       border-top: 1px solid var(--line);
@@ -390,7 +396,6 @@
       flex-wrap: wrap;
     }
 
-    /* Animaciones de scroll */
     .animate,
     .animate-left,
     .animate-right,
@@ -645,14 +650,22 @@
         <h2>Solicita tu página web para ventas</h2>
         <p class="section-text">Déjanos tus datos o escríbenos por WhatsApp. Podemos adaptar esta página a tu negocio, rubro o campaña.</p>
       </div>
-      <form class="animate-right">
-        <label>Nombre</label>
-        <input type="text" placeholder="Tu nombre" />
-        <label>WhatsApp</label>
-        <input type="text" placeholder="Tu número" />
-        <label>¿Qué vendes?</label>
-        <textarea rows="4" placeholder="Cuéntanos sobre tu producto o servicio"></textarea>
-        <button type="button" class="btn btn-dark" style="width:100%; border:none; cursor:pointer;">Solicitar información</button>
+
+      <form id="formulario-contacto" class="animate-right">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required />
+
+        <label for="whatsapp">WhatsApp</label>
+        <input type="text" id="whatsapp" name="whatsapp" placeholder="Tu número" required />
+
+        <label for="que_vendes">¿Qué vendes?</label>
+        <textarea id="que_vendes" name="que_vendes" rows="4" placeholder="Cuéntanos sobre tu producto o servicio" required></textarea>
+
+        <button id="boton-enviar" type="submit" class="btn btn-dark" style="width:100%; border:none; cursor:pointer;">
+          Solicitar información
+        </button>
+
+        <div id="estado-formulario" class="estado-formulario"></div>
       </form>
     </div>
   </section>
@@ -698,6 +711,53 @@
     });
 
     window.dispatchEvent(new Event('scroll'));
+
+    const formulario = document.getElementById("formulario-contacto");
+    const botonEnviar = document.getElementById("boton-enviar");
+    const estadoFormulario = document.getElementById("estado-formulario");
+
+    formulario.addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      const data = {
+        nombre: document.getElementById("nombre").value.trim(),
+        whatsapp: document.getElementById("whatsapp").value.trim(),
+        que_vendes: document.getElementById("que_vendes").value.trim()
+      };
+
+      if (!data.nombre || !data.whatsapp || !data.que_vendes) {
+        estadoFormulario.textContent = "Completa todos los campos.";
+        estadoFormulario.style.color = "#dc2626";
+        return;
+      }
+
+      botonEnviar.disabled = true;
+      botonEnviar.textContent = "Enviando...";
+      estadoFormulario.textContent = "Enviando datos...";
+      estadoFormulario.style.color = "#2563eb";
+
+      try {
+        const respuesta = await fetch("https://script.google.com/macros/s/AKfycbzKtaIcIuzT8dlGG1g_vvuWT-wNvPn8VV6-Duh18_FOQQfJhvTyxE9jnoy7cJEAhZDh/exec", {
+          method: "POST",
+          body: JSON.stringify(data)
+        });
+
+        if (!respuesta.ok) {
+          throw new Error("Respuesta no válida del servidor");
+        }
+
+        estadoFormulario.textContent = "Datos enviados correctamente.";
+        estadoFormulario.style.color = "#16a34a";
+        formulario.reset();
+      } catch (error) {
+        console.error(error);
+        estadoFormulario.textContent = "Hubo un error al enviar el formulario.";
+        estadoFormulario.style.color = "#dc2626";
+      } finally {
+        botonEnviar.disabled = false;
+        botonEnviar.textContent = "Solicitar información";
+      }
+    });
   </script>
 </body>
 </html>
