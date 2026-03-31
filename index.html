@@ -376,6 +376,12 @@
       transform: translateY(-1px);
     }
 
+    .estado-formulario {
+      margin-top: 10px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
     .footer {
       background: white;
       border-top: 1px solid var(--line);
@@ -390,7 +396,6 @@
       flex-wrap: wrap;
     }
 
-    /* Animaciones de scroll */
     .animate,
     .animate-left,
     .animate-right,
@@ -499,15 +504,51 @@
         padding-top: 42px;
       }
     }
+    .logo-container {
+  position: relative;
+  width: 260px;   /* ajusta según tu logo */
+  height: 70px;   /* ajusta según tu logo */
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transition: opacity .3s ease;
+}
+
+/* Al inicio */
+.logo-dark {
+  opacity: 1;
+}
+
+.logo-light {
+  opacity: 0;
+}
+
+/* Cuando haces scroll */
+.header.scrolled .logo-dark {
+  opacity: 0;
+}
+
+.header.scrolled .logo-light {
+  opacity: 1;
+}
   </style>
 </head>
 <body>
   <header class="header">
     <div class="container header-inner">
-      <div>
-        <p class="brand-title">Tu Marca</p>
-        <p class="brand-subtitle">Soluciones Becom que venden más</p>
-      </div>
+     <div class="logo-container">
+      <img src="LOGO BECOM.png" class="logo logo-dark" alt="Logo">
+      <img src="LOGO BECOM BLANCO.png" class="logo logo-light" alt="Logo blanco">
+    </div>
       <a href="https://wa.me/51912699589" target="_blank" class="btn btn-dark">Escríbenos por WhatsApp</a>
     </div>
   </header>
@@ -645,14 +686,22 @@
         <h2>Solicita tu página web para ventas</h2>
         <p class="section-text">Déjanos tus datos o escríbenos por WhatsApp. Podemos adaptar esta página a tu negocio, rubro o campaña.</p>
       </div>
-      <form class="animate-right">
-        <label>Nombre</label>
-        <input type="text" placeholder="Tu nombre" />
-        <label>WhatsApp</label>
-        <input type="text" placeholder="Tu número" />
-        <label>¿Qué vendes?</label>
-        <textarea rows="4" placeholder="Cuéntanos sobre tu producto o servicio"></textarea>
-        <button type="button" class="btn btn-dark" style="width:100%; border:none; cursor:pointer;">Solicitar información</button>
+
+      <form id="formulario-contacto" class="animate-right">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required />
+
+        <label for="whatsapp">WhatsApp</label>
+        <input type="text" id="whatsapp" name="whatsapp" placeholder="Tu número" required />
+
+        <label for="que_vendes">¿Qué vendes?</label>
+        <textarea id="que_vendes" name="que_vendes" rows="4" placeholder="Cuéntanos sobre tu producto o servicio" required></textarea>
+
+        <button id="boton-enviar" type="submit" class="btn btn-dark" style="width:100%; border:none; cursor:pointer;">
+          Solicitar información
+        </button>
+
+        <div id="estado-formulario" class="estado-formulario"></div>
       </form>
     </div>
   </section>
@@ -660,8 +709,8 @@
   <footer class="footer">
     <div class="container footer-inner">
       <div>
-        <p class="brand-title" style="font-size:18px;">Tu Marca</p>
-        <p class="brand-subtitle">Página web enfocada en ventas y conversiones.</p>
+        <p class="brand-title" style="font-size:18px;">BECOM</p>
+        <p class="brand-subtitle">Copyright © 2026</p>
       </div>
       <a href="https://wa.me/51912699589" target="_blank" class="btn btn-light">Hablar por WhatsApp</a>
     </div>
@@ -698,6 +747,53 @@
     });
 
     window.dispatchEvent(new Event('scroll'));
+
+    const formulario = document.getElementById("formulario-contacto");
+    const botonEnviar = document.getElementById("boton-enviar");
+    const estadoFormulario = document.getElementById("estado-formulario");
+
+    formulario.addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      const data = {
+        nombre: document.getElementById("nombre").value.trim(),
+        whatsapp: document.getElementById("whatsapp").value.trim(),
+        que_vendes: document.getElementById("que_vendes").value.trim()
+      };
+
+      if (!data.nombre || !data.whatsapp || !data.que_vendes) {
+        estadoFormulario.textContent = "Completa todos los campos.";
+        estadoFormulario.style.color = "#dc2626";
+        return;
+      }
+
+      botonEnviar.disabled = true;
+      botonEnviar.textContent = "Enviando...";
+      estadoFormulario.textContent = "Enviando datos...";
+      estadoFormulario.style.color = "#2563eb";
+
+      try {
+        const respuesta = await fetch("https://script.google.com/macros/s/AKfycbylVqzDWDhTI6bTD6_1DJ5acucI3D1BBseUAZbLjLOg-gd9k3VuJ9xy-ACAcoveCouY/exec", {
+          method: "POST",
+          body: JSON.stringify(data)
+        });
+
+        if (!respuesta.ok) {
+          throw new Error("Respuesta no válida del servidor");
+        }
+
+        estadoFormulario.textContent = "Datos enviados correctamente.";
+        estadoFormulario.style.color = "#16a34a";
+        formulario.reset();
+      } catch (error) {
+        console.error(error);
+        estadoFormulario.textContent = "Hubo un error al enviar el formulario.";
+        estadoFormulario.style.color = "#dc2626";
+      } finally {
+        botonEnviar.disabled = false;
+        botonEnviar.textContent = "Solicitar información";
+      }
+    });
   </script>
 </body>
 </html>
