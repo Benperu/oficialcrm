@@ -67,6 +67,75 @@
       padding: 16px 0;
     }
 
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      flex-wrap: wrap;
+    }
+
+    .main-nav {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .main-nav a {
+      position: relative;
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: .01em;
+      display: inline-block;
+      padding: 6px 2px;
+      transform-origin: center;
+      transition:
+        color .25s ease,
+        opacity .25s ease,
+        transform .25s ease,
+        text-shadow .25s ease;
+    }
+
+    .main-nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -4px;
+      width: 100%;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #2563eb, #60a5fa);
+      transform: scaleX(0);
+      transform-origin: center;
+      transition: transform .28s ease;
+      opacity: .95;
+    }
+
+    .main-nav a:hover {
+      color: #2563eb;
+      transform: scale(1.12);
+      text-shadow: 0 8px 20px rgba(37,99,235,.18);
+    }
+
+    .main-nav a:hover::after {
+      transform: scaleX(1);
+    }
+
+    .header.scrolled .main-nav a {
+      color: rgba(255,255,255,.92);
+    }
+
+    .header.scrolled .main-nav a::after {
+      background: linear-gradient(90deg, #93c5fd, #ffffff);
+    }
+
+    .header.scrolled .main-nav a:hover {
+      color: #ffffff;
+      transform: scale(1.12);
+      text-shadow: 0 8px 20px rgba(255,255,255,.18);
+    }
+
     .brand-title {
       font-size: 22px;
       font-weight: 700;
@@ -224,6 +293,7 @@
     .section {
       padding: 78px 0;
       position: relative;
+      scroll-margin-top: 110px;
     }
 
     .section-white {
@@ -288,6 +358,10 @@
     .step-card:nth-child(1){ background: var(--c2); }
     .step-card:nth-child(2){ background: var(--c3); }
     .step-card:nth-child(3){ background: var(--c4); }
+
+    .menu-card-1 { background: linear-gradient(135deg,#eef2ff,#e0e7ff); }
+    .menu-card-2 { background: linear-gradient(135deg,#ecfeff,#cffafe); }
+    .menu-card-3 { background: linear-gradient(135deg,#f0fdf4,#dcfce7); }
 
     .step-card,
     .video-note,
@@ -546,6 +620,17 @@
         flex-direction: column;
       }
 
+      .header-right {
+        width: 100%;
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .main-nav {
+        gap: 16px;
+      }
+
       .hero {
         padding-top: 42px;
       }
@@ -566,6 +651,10 @@
 
       .float-whatsapp span {
         display: none;
+      }
+
+      .main-nav a {
+        font-size: 14px;
       }
     }
 
@@ -612,7 +701,15 @@
         <img src="LOGO BECOM.png" class="logo logo-dark" alt="Logo">
         <img src="LOGO BECOM BLANCO.png" class="logo logo-light" alt="Logo blanco">
       </div>
-      <a href="https://wa.me/51912699589" target="_blank" class="btn btn-dark">Escríbenos por WhatsApp</a>
+
+      <div class="header-right">
+        <nav class="main-nav">
+          <a href="#beneficios">Beneficios</a>
+          <a href="#masivos">Masivos</a>
+          <a href="#chatmultiagente">Chatmultiagente</a>
+        </nav>
+        <a href="https://wa.me/51912699589" target="_blank" class="btn btn-dark">Escríbenos por WhatsApp</a>
+      </div>
     </div>
   </header>
 
@@ -670,6 +767,52 @@
         <div class="card benefit-card hover-lift animate-zoom stagger-4">
           <h3>Imagen profesional</h3>
           <p>Haz que tu negocio se vea serio, moderno y confiable.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="masivos" class="section animate">
+    <div class="container">
+      <p class="section-tag">Masivos</p>
+      <h2>Automatiza envíos y llega a más clientes</h2>
+      <p class="section-text">Organiza campañas masivas, centraliza tus contactos y mantén una comunicación más rápida y ordenada con tus prospectos.</p>
+
+      <div class="grid-3">
+        <div class="card menu-card-1 hover-lift animate-left stagger-1">
+          <h3>Envíos rápidos</h3>
+          <p>Comparte promociones, novedades o seguimientos de manera más ágil con tu base de contactos.</p>
+        </div>
+        <div class="card menu-card-2 hover-lift animate-zoom stagger-2">
+          <h3>Segmentación</h3>
+          <p>Ordena tus contactos por interés, etapa de venta o tipo de cliente para comunicar mejor.</p>
+        </div>
+        <div class="card menu-card-3 hover-lift animate-right stagger-3">
+          <h3>Mayor alcance</h3>
+          <p>Llega a más personas con mensajes claros y bien estructurados, manteniendo una imagen profesional.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="chatmultiagente" class="section section-white animate">
+    <div class="container">
+      <p class="section-tag">Chatmultiagente</p>
+      <h2>Atiende conversaciones con varios asesores</h2>
+      <p class="section-text">Permite que varios agentes respondan desde una misma plataforma, mejorando el seguimiento y la atención al cliente.</p>
+
+      <div class="grid-3">
+        <div class="card menu-card-1 hover-lift animate-left stagger-1">
+          <h3>Trabajo en equipo</h3>
+          <p>Varios asesores pueden atender consultas sin perder el orden de las conversaciones.</p>
+        </div>
+        <div class="card menu-card-2 hover-lift animate-zoom stagger-2">
+          <h3>Respuesta más rápida</h3>
+          <p>Reduce tiempos de espera y mejora la experiencia del cliente en cada contacto.</p>
+        </div>
+        <div class="card menu-card-3 hover-lift animate-right stagger-3">
+          <h3>Control y seguimiento</h3>
+          <p>Revisa el historial, organiza mejor los leads y da continuidad a cada oportunidad de venta.</p>
         </div>
       </div>
     </div>
