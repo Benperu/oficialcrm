@@ -437,17 +437,63 @@
       right: 22px;
       bottom: 22px;
       z-index: 60;
-      background: #16a34a;
-      color: white;
-      border-radius: 999px;
-      padding: 14px 18px;
-      font-weight: 700;
-      box-shadow: 0 18px 40px rgba(22, 163, 74, 0.28);
+      background: #25D366;
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 18px 40px rgba(37, 211, 102, 0.35);
       animation: pulseWhatsApp 1.8s infinite;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
     .float-whatsapp:hover {
-      transform: translateY(-3px) scale(1.03);
+      transform: translateY(-3px) scale(1.08);
+      box-shadow: 0 22px 44px rgba(37, 211, 102, 0.42);
+    }
+
+    .float-whatsapp img {
+      width: 30px;
+      height: 30px;
+      display: block;
+    }
+
+    .float-whatsapp span {
+      position: absolute;
+      right: 76px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #111827;
+      color: #fff;
+      padding: 9px 12px;
+      border-radius: 10px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .25s ease, transform .25s ease, visibility .25s ease;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.18);
+      pointer-events: none;
+    }
+
+    .float-whatsapp span::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      right: -6px;
+      transform: translateY(-50%);
+      border-width: 6px 0 6px 6px;
+      border-style: solid;
+      border-color: transparent transparent transparent #111827;
+    }
+
+    .float-whatsapp:hover span {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(-50%) translateX(-2px);
     }
 
     .stagger-1 { transition-delay: .08s; }
@@ -462,9 +508,9 @@
     }
 
     @keyframes pulseWhatsApp {
-      0% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.45); }
-      70% { box-shadow: 0 0 0 16px rgba(22, 163, 74, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0); }
+      0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.45); }
+      70% { box-shadow: 0 0 0 16px rgba(37, 211, 102, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
     }
 
     @keyframes rotateGlow {
@@ -504,51 +550,68 @@
         padding-top: 42px;
       }
     }
+
+    @media (max-width: 640px) {
+      .float-whatsapp {
+        right: 16px;
+        bottom: 16px;
+        width: 58px;
+        height: 58px;
+      }
+
+      .float-whatsapp img {
+        width: 28px;
+        height: 28px;
+      }
+
+      .float-whatsapp span {
+        display: none;
+      }
+    }
+
     .logo-container {
-  position: relative;
-  width: 260px;   /* ajusta según tu logo */
-  height: 70px;   /* ajusta según tu logo */
-  display: flex;
-  align-items: center;
-}
+      position: relative;
+      width: 260px;
+      height: 70px;
+      display: flex;
+      align-items: center;
+    }
 
-.logo {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  transform: translateY(-50%);
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  transition: opacity .3s ease;
-}
+    .logo {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      transition: opacity .3s ease;
+    }
 
-/* Al inicio */
-.logo-dark {
-  opacity: 1;
-}
+    .logo-dark {
+      opacity: 1;
+    }
 
-.logo-light {
-  opacity: 0;
-}
+    .logo-light {
+      opacity: 0;
+    }
 
-/* Cuando haces scroll */
-.header.scrolled .logo-dark {
-  opacity: 0;
-}
+    .header.scrolled .logo-dark {
+      opacity: 0;
+    }
 
-.header.scrolled .logo-light {
-  opacity: 1;
-}
+    .header.scrolled .logo-light {
+      opacity: 1;
+    }
   </style>
 </head>
 <body>
   <header class="header">
     <div class="container header-inner">
-     <div class="logo-container">
-      <img src="LOGO BECOM.png" class="logo logo-dark" alt="Logo">
-      <img src="LOGO BECOM BLANCO.png" class="logo logo-light" alt="Logo blanco">
-    </div>
+      <div class="logo-container">
+        <img src="LOGO BECOM.png" class="logo logo-dark" alt="Logo">
+        <img src="LOGO BECOM BLANCO.png" class="logo logo-light" alt="Logo blanco">
+      </div>
       <a href="https://wa.me/51912699589" target="_blank" class="btn btn-dark">Escríbenos por WhatsApp</a>
     </div>
   </header>
@@ -716,7 +779,10 @@
     </div>
   </footer>
 
-  <a class="float-whatsapp" href="https://wa.me/51912699589" target="_blank">WhatsApp</a>
+  <a class="float-whatsapp" href="https://wa.me/51912699589?text=Hola%2C%20quiero%20m%C3%A1s%20informaci%C3%B3n" target="_blank" aria-label="Abrir WhatsApp">
+    <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp">
+    <span>Escríbenos</span>
+  </a>
 
   <script>
     const observer = new IntersectionObserver((entries) => {
